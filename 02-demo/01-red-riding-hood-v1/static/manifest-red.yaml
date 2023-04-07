@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: green
+  name: red
 ---
 # Source: little-red-riding-hood-goldie/templates/body-server_sa.yaml
 apiVersion: v1
