@@ -7,7 +7,7 @@ docker de tooling que nous vous avons fourni.
 ```bash
 export REPO_ROOT_DIR=<chemin vers le clone du projet>
 export KUBECONFIG=<chemin vers le fichier du config du cluster kubernetes>
-docker run --rm -v $KUBECONFIG:/home/tooling/kubeconfig.yaml -v $REPO_ROOT_DIR/labs/00-preconfig/:/apps -it zebeurton/lab-devoxx/tooling
+docker run --rm -v $KUBECONFIG:/home/tooling/kubeconfig.yaml -v $REPO_ROOT_DIR/labs/00-preconfig/:/apps -it ghcr.io/ddrugeon/devoxx2023-tooling
 ```
 
 Déplacer vous dans le dossier du lab
