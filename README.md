@@ -65,6 +65,9 @@ kube-public       Active   29h
 kube-node-lease   Active   29h
 ```
 
+**TODO : Donner la commande Vault pour récupérer le context Kube**
+
+
 ## Ouvrons le livre
 
 Nous allons maintenant instancer nos goldies, dans une version rouge et dans une version verte.
