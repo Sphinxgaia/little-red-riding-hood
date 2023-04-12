@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: boundary
+  name: boundary
+  namespace: boundary
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: boundary
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: boundary
+        service: boundary
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - args:
+        - server
+        - -config
+        - /boundary/boundary.hcl
+        env:
+        - name: BOUNDARY_PG_URL
+          value: postgresql://postgres:postgres@postgres:5432/boundary?sslmode=disable
+        - name: HOSTNAME
+          value: boundary
+        image: public.ecr.aws/hashicorp/boundary:latest
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 9200
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: boundary
+        ports:
+        - containerPort: 9200
+          protocol: TCP
+        - containerPort: 9201
+          protocol: TCP
+        - containerPort: 9202
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 9200
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        securityContext:
+          capabilities:
+            add:
+            - IPC_LOCK
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /boundary
+          mountPropagation: None
+          name: boundary-config
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      initContainers:
+      - args:
+        - database
+        - init
+        - -config
+        - /boundary/boundary.hcl
+        env:
+        - name: BOUNDARY_PG_URL
+          value: postgresql://postgres:postgres@postgres:5432/boundary?sslmode=disable
+        - name: HOSTNAME
+          value: boundary
+        image: public.ecr.aws/hashicorp/boundary:latest
+        imagePullPolicy: Always
+        name: boundary-init
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /boundary
+          mountPropagation: None
+          name: boundary-config
+          readOnly: true
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      shareProcessNamespace: false
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: boundary-config
+          optional: false
+        name: boundary-config

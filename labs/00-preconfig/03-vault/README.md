@@ -65,6 +65,14 @@ vault operator unseal $(grep 'Key 1:' key-vault.txt | awk '{print $NF}')
 sleep 2
 
 vault login $(grep 'Initial Root Token:' key-vault.txt | awk '{print $NF}')
+
+exit
+```
+
+Copier votre clé pour plus de sécurité
+
+```bash
+kubectl copy vault/vault0
 ```
 
 Restons dans le conteneur pour exécuter les commandes suivantes.

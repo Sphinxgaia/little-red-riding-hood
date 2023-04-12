@@ -1,37 +1,16 @@
-# resource "boundary_target" "redis" {
-#   type                     = "tcp"
-#   name                     = "redis"
-#   description              = "Redis container"
-#   scope_id                 = boundary_scope.project.id
-#   session_connection_limit = -1
-#   session_max_seconds      = 10000
-#   default_port             = 6379
-#   # host_set_ids = [
-#   #   boundary_host_set_static.redis_containers.id
-#   # ]
-# }
 
-# resource "boundary_target" "postgres" {
-#   type                     = "tcp"
-#   name                     = "postgres"
-#   description              = "Postgres server"
-#   scope_id                 = boundary_scope.project.id
-#   session_connection_limit = -1
-#   session_max_seconds      = 10000
-#   default_port             = 5432
-#   # host_set_ids = [
-#   #   boundary_host_set_static.postgres_containers.id
-#   # ]
-# }
-
-
-resource "boundary_target" "eks" {
-  name         = "eksapi"
-  description  = "local eksapi"
+resource "boundary_target" "red" {
+  name         = "k8s"
+  description  = "local k8s"
   type         = "tcp"
   default_port = "443"
   scope_id     = boundary_scope.project.id
   host_source_ids = [
     boundary_host_set_static.kubernetes_api.id
   ]
+  
+  brokered_credential_source_ids = [
+    boundary_credential_library_vault.red.id
+  ]
 }
+

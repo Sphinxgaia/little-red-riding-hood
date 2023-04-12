@@ -5,6 +5,13 @@ resource "random_password" "password" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
+resource "random_password" "adminpassword" {
+  for_each         = var.admins
+  length           = 16
+  special          = true
+  override_special = "!#$%&*()-_=+[]{}<>:?"
+}
+
 resource "boundary_account_password" "user" {
   for_each       = var.users
   name           = lower(each.key)
@@ -22,5 +29,10 @@ resource "boundary_account_password" "admins" {
   auth_method_id = boundary_auth_method_password.password.id
   type           = "password"
   login_name     = lower(each.key)
-  password       = "foofoofoo"
+  password       = random_password.adminpassword[each.key].result
+}
+
+output "password" {
+  value = boundary_account_password.admins
+  sensitive = true
 }

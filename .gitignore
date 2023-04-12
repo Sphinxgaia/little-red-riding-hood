@@ -5,4 +5,4 @@
 *-kubeconfig.yaml
 *vcluster-*.yaml
 01-infra/
-*boundary-creds
+boundary-creds/

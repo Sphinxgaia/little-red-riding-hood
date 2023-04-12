@@ -1,0 +1,50 @@
+---
+# Source: little-red-riding-hood-goldie/templates/main-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: boundary-controller
+  namespace: boundary
+  labels:
+    app: boundary
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: vcluster-user1-boundary.aws.sphinxgaia.jeromemasson.fr # give your domain name here
+spec:
+  ingressClassName: nginx 
+  rules:
+    - host: "vcluster-user1-boundary.aws.sphinxgaia.jeromemasson.fr"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: boundary-controller
+                port:
+                  number: 9200
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: boundary-controller
+  name: boundary-controller
+  namespace: boundary
+spec:
+  ports:
+  - name: api
+    port: 9200
+    protocol: TCP
+    targetPort: 9200
+  - name: cluster
+    port: 9201
+    protocol: TCP
+    targetPort: 9201
+  - name: data
+    port: 9202
+    protocol: TCP
+    targetPort: 9202
+  selector:
+    app: boundary
+  sessionAffinity: None
+  type: ClusterIP
