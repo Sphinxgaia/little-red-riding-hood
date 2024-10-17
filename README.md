@@ -111,11 +111,9 @@ Vous devriez voir les informations de votre cluster Kubernetes s'afficher.
 
 ## Architecture de l'application
 
-🚧 **En construction** 🚧
+![Little Red Riding Hood Architecture](images/archi.png)
 
-@todo: Ajouter une description de l'application, son fonctionnement et ce qui est attendu dans une version sécurisée.
-@todo: Ajouter l'architecture de l'application
-@todo: Ajouter les différentes versions de l'application
+L'application d'exemple est simple. Elle est composée d'un frontend en GO qui sert une page HTML. Cette derniére est construite en appelant un backend lui aussi aussi en GO.
 
 ## Règles du Jeu
 

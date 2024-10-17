@@ -7,11 +7,16 @@ applications, toutes jouant un rôle crucial dans la vie du village. Cependant, 
 qui menaçait la sécurité des communications et l'intégrité des données échangées. Pour protéger son royaume et assurer 
 la sécurité des échanges, le Petit Chaperon Rouge savait qu'elle devait déployer des mesures de protection efficaces.
 
-## Le but de l'exercice
+## Le but de l'exercice 
 
 L'objectif de cet exercice est d'installer et de configurer Linkerd sur votre cluster Kubernetes. Vous apprendrez à 
 établir un maillage de services capable de sécuriser les échanges entre applications, tout en facilitant l'observabilité 
 grâce à des métriques en temps réel.
+
+Durant cet atelier, nous allons chercher à monter les deux composants sidecar qui vont avoir la responsabilité de sécurisé
+la communication entre le frontend et le backend.
+
+![Little Red Riding Hood Architecture Mesh](../../images/archi_mesh.png)
 
 ## Pourquoi utiliser Linkerd ?
 
